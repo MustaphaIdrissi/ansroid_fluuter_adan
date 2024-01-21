@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../troispage.dart';
 import '../homing.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     initialRoute: '/',
     routes: {
       '/': (context) => Adanexemple(),
@@ -16,8 +18,7 @@ void main() {
 class Adanexemple extends StatelessWidget {
   const Adanexemple({super.key});
 
-  get icon => null;
-
+  get icon => 'fffff';
   ElevatedButton buildButton(
       BuildContext context, final int index, String name, String liimag) {
     return ElevatedButton(
@@ -45,7 +46,7 @@ class Adanexemple extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            color: const Color.fromARGB(255, 230, 11, 11),
+            color: Color.fromARGB(255, 56, 7, 233),
             child: Text(
               '$name',
               textAlign: TextAlign.center,
@@ -65,42 +66,47 @@ class Adanexemple extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> itemList = [
-      'ادان',
-      'صلاة',
+      'أوقات الصلاة',
       'دعاء',
+      'ادان',
       'القبلة',
       'تسبيح',
       '2تسبيح'
     ];
     final List<String> itemimg = [
-      'adan1.png',
-      'adan2.png',
+      'adan6.png',
       'adan3.png',
+      'adan1.png',
       'adan4.png',
       'adan5.png',
-      'adan6.png'
+      'adan2.png'
     ];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page 1'),
-      ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Number of columns in the grid
-          crossAxisSpacing: 8.0, // Spacing between columns
-          mainAxisSpacing: 8.0, // Spacing between rows
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Page 1'),
         ),
-        itemCount: itemList.length, // Number of items in the grid
-        itemBuilder: (
-          context,
-          index,
-        ) {
-          // Return the widget for each grid item
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: buildButton(context, index, itemList[index], itemimg[index]),
-          );
-        },
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Number of columns in the grid
+            crossAxisSpacing: 8.0, // Spacing between columns
+            mainAxisSpacing: 8.0, // Spacing between rows
+          ),
+          itemCount: itemList.length, // Number of items in the grid
+          itemBuilder: (
+            context,
+            index,
+          ) {
+            // Return the widget for each grid item
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child:
+                  buildButton(context, index, itemList[index], itemimg[index]),
+            );
+          },
+        ),
       ),
     );
   }
