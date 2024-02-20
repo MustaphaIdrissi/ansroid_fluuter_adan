@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:intl/intl.dart';
 import 'dart:convert';
-
+import 'package:adan/menuleft.dart';
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
 class PrayerTimesScreen extends StatefulWidget {
   @override
   _PrayerTimesScreenState createState() => _PrayerTimesScreenState();
@@ -19,6 +20,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
+            color:myColorApp.ColorApp().Textcolor,
           ),
         ),
         Text(
@@ -26,6 +28,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
+             color:myColorApp.ColorApp().Textcolor,
           ),
         ),
       ],
@@ -34,102 +37,110 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-        body: FutureBuilder(
-      future: ReadJsonData(),
-      builder: (context, data) {
-        if (data.hasError) {
-          return Center(child: Text("${data.error}"));
-        } else if (data.hasData) {
-          var items = data.data as List<Timesalate>;
-          return ListView.builder(
-              itemCount: items == null ? 0 : items.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: double.infinity,
-                  height: 600,
-                  child: Align(
-                    alignment: AlignmentDirectional(0, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Card(
-                            elevation: 5,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 0),
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: 12),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'اوقات الصلاة اليوم :${items[index].date.toString()}',
-                                                  style: TextStyle(
-                                                    fontSize: 26.0,
-                                                    fontWeight: FontWeight.bold,
+      
+        drawer: MenuLeft(),
+        body: Container(
+           color: myColorApp.ColorApp().background2,
+          child: FutureBuilder(
+              future: ReadJsonData(),
+              builder: (context, data) {
+          if (data.hasError) {
+            return Center(child: Text("${data.error}"));
+          } else if (data.hasData) {
+            var items = data.data as List<Timesalate>;
+            return ListView.builder(
+                itemCount: items == null ? 0 : items.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: double.infinity,
+                    height: 600,
+                    child: Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Card(
+                                color:  myColorApp.ColorApp().background,
+                              elevation: 5,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 0),
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.only(bottom: 12),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              color:  myColorApp.ColorApp().background,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'اوقات الصلاة اليوم :${items[index].date.toString()}',
+                                                    style: TextStyle(
+                                                      fontSize: 26.0,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Divider(
-                                            thickness: 1,
-                                            color: Colors.blue,
-                                          ),
-                                          afiche('الامساك',
-                                              items[index].Imsak.toString()),
-                                          afiche('الفجر',
-                                              items[index].fajr.toString()),
-                                          afiche('الشروق',
-                                              items[index].sunrise.toString()),
-                                          afiche('الظهر',
-                                              items[index].Dhuhr.toString()),
-                                          afiche('العصر',
-                                              items[index].Asr.toString()),
-                                          afiche('المغرب',
-                                              items[index].Maghrib.toString()),
-                                          afiche('العشاء',
-                                              items[index].Isha.toString()),
-
-                                          // Add more rows for other prayer timings if needed
-                                        ],
+                                            Divider(
+                                              thickness: 1,
+                                              color: myColorApp.ColorApp().Textcolor,
+                                            ),
+                                            afiche('الامساك',
+                                                items[index].Imsak.toString()),
+                                            afiche('الفجر',
+                                                items[index].fajr.toString()),
+                                            afiche('الشروق',
+                                                items[index].sunrise.toString()),
+                                            afiche('الظهر',
+                                                items[index].Dhuhr.toString()),
+                                            afiche('العصر',
+                                                items[index].Asr.toString()),
+                                            afiche('المغرب',
+                                                items[index].Maghrib.toString()),
+                                            afiche('العشاء',
+                                                items[index].Isha.toString()),
+        
+                                            // Add more rows for other prayer timings if needed
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              });
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    ));
+                  );
+                });
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+              },
+            ),
+        ));
   }
 
   Future<List<Timesalate>> ReadJsonData() async {

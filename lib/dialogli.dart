@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
+import 'package:adan/Theme/colorapp.dart';
 
 class dail1 extends StatelessWidget {
   @override
@@ -22,7 +23,8 @@ class _MyFormState extends State<MyForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form with Text List'),
+        title: Text(' إضافة التسبيح'),
+        backgroundColor: myColorApp.ColorApp().background,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,7 +49,7 @@ class _MyFormState extends State<MyForm> {
               onPressed: () {
                 _showTextDialog();
               },
-              child: Text('Add Text'),
+              child: Text(' إضافة التسبيح'),
             ),
           ],
         ),
@@ -63,17 +65,17 @@ class _MyFormState extends State<MyForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Text'),
+          title: Text(' إضافة التسبيح'),
           content: TextField(
             controller: textController,
-            decoration: InputDecoration(labelText: 'Enter text'),
+            decoration: InputDecoration(labelText: ' إضافة التسبيح'),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('الغاء'),
             ),
             TextButton(
               onPressed: () {
@@ -82,7 +84,7 @@ class _MyFormState extends State<MyForm> {
                 });
                 Navigator.of(context).pop();
               },
-              child: Text('Add'),
+              child: Text(' إضافة'),
             ),
           ],
         );

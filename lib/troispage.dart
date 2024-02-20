@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
 
+import 'package:adan/menuleft.dart';
+import 'package:flutter/material.dart';
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
 import 'doae.dart';
 
 class Page3 extends StatelessWidget {
@@ -7,36 +10,65 @@ class Page3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String receivedData =
-        ModalRoute.of(context)!.settings.arguments as String;
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>? ??
+            {};
+    final String label = arguments['label'] ?? '';
+    final int indexr = arguments['indexr'] ?? 0;
+    final int receivedData = indexr;
 
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        drawer: MenuLeft(),
         appBar: AppBar(
-          title: Text('$receivedData'),
+          title: Text('$label'),
+          backgroundColor: myColorApp.ColorApp().background,
         ),
-        body: ListView.builder(
-            itemCount: getListByReceivedData(receivedData).length,
-            itemBuilder: (context, index) {
-              return Testing(
-                doae: getListByReceivedData(receivedData)[index].doae,
-                rept: getListByReceivedData(receivedData)[index].rept,
-                index: index,
-              );
-            }),
+        body: Container(
+          color: myColorApp.ColorApp().background,
+          child: ListView.builder(
+              itemCount: getListByReceivedData(receivedData).length,
+              itemBuilder: (context, index) {
+                return Testing(
+                  doae: getListByReceivedData(receivedData)[index].doae,
+                  rept: getListByReceivedData(receivedData)[index].rept,
+                  index: index,
+                );
+              }),
+        ),
       ),
     );
   }
 
-  List<Douae> getListByReceivedData(String receivedData) {
+  List<Douae> getListByReceivedData(int receivedData) {
     switch (receivedData) {
-      case ' أذكار الصباح':
+      case 0:
         return doaegroup;
-      case ' اذكار المساء':
+      case 1:
         return doaegroup1;
-      case ' أذكار بعد الصلاة':
-        return doaegroup16;
+      case 2:
+        return doaegroup2;
+      case 3:
+        return doaegroup3;
+      case 4:
+        return doaegroup4;
+      case 5:
+        return doaegroup5;
+      case 6:
+        return doaegroup6;
+      case 7:
+        return doaegroup7;
+      case 8:
+        return doaegroup8;
+      case 9:
+        return doaegroup9;
+      case 10:
+        return doaegroup10;
+      case 11:
+        return doaegroup11;
+      case 12:
+        return doaegroup12;
       // Add more cases as needed
 
       // Default case (return an empty list)
@@ -73,14 +105,15 @@ class _TestingState extends State<Testing> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: myColorApp.ColorApp().trans,
+      ),
       onPressed: () {
         setState(() {
           // Modifying the state within the callback
-          if (totalRep > 1) {
+          if (totalRep > 0) {
             totalRep--;
-          } else {
-            print('totalRep is already zero!');
-          }
+          } else {}
         });
       },
       child: Column(
@@ -92,14 +125,14 @@ class _TestingState extends State<Testing> {
             height: 200,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: myColorApp.ColorApp().Textcolor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(19.0),
                 bottomRight: Radius.circular(19.0),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
+                  color: myColorApp.ColorApp().shado1,
                   spreadRadius: 7, // Spread radius
                   blurRadius: 7,
                   offset: Offset.zero,
@@ -123,7 +156,7 @@ class _TestingState extends State<Testing> {
                           // backgroundColor: Colors.yellow,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: myColorApp.ColorApp().Textcolor2,
                         ),
                       ),
                     ),
@@ -134,14 +167,14 @@ class _TestingState extends State<Testing> {
                   height: 50,
                   decoration: BoxDecoration(
                     // color: Colors.white,
-                    color: Colors.brown,
+                    color: myColorApp.ColorApp().background,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(19.0),
                       bottomRight: Radius.circular(19.0),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
+                        color: myColorApp.ColorApp().shado1,
                         spreadRadius: 7, // Spread radius
                         blurRadius: 7,
                         offset: Offset.zero,
@@ -153,9 +186,43 @@ class _TestingState extends State<Testing> {
                         MainAxisAlignment.spaceEvenly, // Adjust as needed
 
                     children: [
-                      Text('مشاركة'),
-                      Text('$totalRep'),
-                      Text('تكرار'),
+                      Text(
+                        'تكرار',
+                        style: TextStyle(
+                          color: myColorApp.ColorApp().Textcolor2,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'font1',
+                        ),
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: myColorApp.ColorApp().Textcolor,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$totalRep',
+                            style: TextStyle(
+                              color: myColorApp.ColorApp().Textcolor2,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800,
+                              fontFamily: 'font1',
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'مشاركة',
+                        style: TextStyle(
+                          color: myColorApp.ColorApp().Textcolor2,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'font1',
+                        ),
+                      ),
                     ],
                   ),
                 ),

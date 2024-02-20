@@ -1,26 +1,38 @@
-import 'package:adan/LocationScreen.dart';
-import 'package:adan/salat.dart';
 import 'package:flutter/material.dart';
+import 'package:adan/LocationScreen.dart';
+import 'package:adan/Theme/colorapp.dart';
+import 'package:adan/indexquran.dart';
+import 'package:adan/menuleft.dart';
+import 'package:adan/quran.dart';
+import 'package:adan/salat.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:geolocator/geolocator.dart';
 import 'dart:math';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
+import 'package:vibration/vibration.dart';
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String receivedData =
-        ModalRoute.of(context)!.settings.arguments as String;
+    ColorApp myColorApp = ColorApp();
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>? ??
+            {};
+    final String label = arguments['label'] ?? '';
+    final int indexr = arguments['indexr'] ?? 0;
+    final int receivedData = indexr;
 
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: receivedData == 'ادان'
+      child: receivedData == 2
           ? Scaffold(
+              drawer: MenuLeft(),
               appBar: AppBar(
-                title: Text('$receivedData'),
+                title: Text('$label'),
+                backgroundColor: myColorApp.background,
               ),
               body: Center(
                 child: ElevatedButton(
@@ -34,49 +46,82 @@ class Page2 extends StatelessWidget {
                       var data = json.decode(response.body);
                     }
                   },
-                  child: Text('ادان'),
+                  child: Text('أذان'),
                 ),
               ),
             )
-          : receivedData == 'دعاء'
+          : receivedData == 1
               ? Scaffold(
+                  drawer: MenuLeft(),
                   appBar: AppBar(
-                    title: Text('$receivedData'),
+                    title: Text('$label'),
+                    backgroundColor: myColorApp.background,
                   ),
                   body: Center(
                     child: adkar(context),
                   ),
                 )
-              : receivedData == 'أوقات الصلاة'
+              : receivedData == 0
                   ? Scaffold(
+                      drawer: MenuLeft(),
                       appBar: AppBar(
-                        title: Text('$receivedData'),
+                        title: Text('$label'),
+                        backgroundColor: myColorApp.background,
                       ),
                       body: PrayerTimesScreen(),
                     )
-                  : receivedData == 'تسبيح'
+                  : receivedData == 4
                       ? Scaffold(
+                          drawer: MenuLeft(),
                           appBar: AppBar(
-                            title: Text('$receivedData'),
+                            title: Text('$label'),
+                            backgroundColor: myColorApp.background,
                           ),
                           body: tasbih(),
                         )
-                      : receivedData == 'القبلة'
+                      : receivedData == 3
                           ? Scaffold(
+                              drawer: MenuLeft(),
                               appBar: AppBar(
-                                title: Text('$receivedData'),
+                                title: Text('$label'),
+                                backgroundColor: myColorApp.background,
                               ),
                               body: compass(),
                             )
-                          : Scaffold(
-                              appBar: AppBar(
-                                title: Text('$receivedData'),
-                              ),
-                              body: Center(
-                                child: Container(),
-                              ),
-                            ),
+                          : receivedData == 5
+                              ? Scaffold(
+                                  drawer: MenuLeft(),
+                                  appBar: AppBar(
+                                    title: Text('$label'),
+                                    backgroundColor: myColorApp.background,
+                                  ),
+                                  body: quran1(),
+                                )
+                              : Scaffold(
+                                  drawer: MenuLeft(),
+                                  appBar: AppBar(
+                                    title: Text('$label'),
+                                    backgroundColor: myColorApp.background,
+                                  ),
+                                  body: Center(
+                                    child: Container(),
+                                  ),
+                                ),
     ); // You can replace this with the default behavior you want when neither condition is met
+  }
+}
+
+class quran1 extends StatefulWidget {
+  const quran1({Key? key}) : super(key: key);
+
+  @override
+  State<quran1> createState() => _quran1State();
+}
+
+class _quran1State extends State<quran1> {
+  @override
+  Widget build(BuildContext context) {
+    return Indexquran();
   }
 }
 
@@ -101,23 +146,19 @@ class _compassState extends State<compass> {
 //adkare
 Widget adkar(BuildContext context) {
   final List<String> itemad = [
-    ' أذكار الصباح',
-    ' اذكار المساء',
-    'أذكار تحصين النفس',
-    'فضل آخر ساعة من يوم الجمعة',
-    'أذكار يوم الجمعة',
-    'فضل الصلاة على النبي في استجابة الدعاء',
-    'تكبيرات العيد الحرم المكي',
-    'آيات تسهيل الولادة',
-    'أذكار ليلة الجمعة',
+    'أذكار الصباح',
+    'أذكار المساء',
+    'أذكار النوم',
+    'أذكار الاستيقاظ',
+    'أذكار الوضوء',
+    'أذكار الشفاء',
+    'أذكار بعد الصلاة',
+    'أذكار للتوبة',
+    'أذكار الجمعة',
     'أذكار الصلاة',
     'كيف أستغفر الله',
-    'أذكار إسلامية',
     'أذكار السفر',
-    ' أذكار تجلب الرزق',
-    ' أذكار بعد صلاة المغرب',
-    ' التسبيح بعد كل صلاة',
-    ' أذكار بعد الصلاة'
+    'أذكار الرزق'
   ];
   return Center(
     child: MyButtonList(itemad),
@@ -131,25 +172,71 @@ class MyButtonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: buttonLabels.length,
-      itemBuilder: (context, index) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Number of columns in the grid
+        crossAxisSpacing: 8.0, // Spacing between columns
+        mainAxisSpacing: 8.0, // Spacing between rows
+      ),
+      itemCount: buttonLabels.length, // Number of items in the grid
+      itemBuilder: (
+        context,
+        index,
+      ) {
+        // Return the widget for each grid item
         return ElevatedButton(
           onPressed: () {
-            // Handle button press
+            print(index);
+            // Navigate to Page 2
             Navigator.pushNamed(
               context,
               '/page3',
-              arguments: buttonLabels[index],
+              arguments: {
+                'label': buttonLabels[index],
+                'indexr': index,
+              },
             );
           },
-          child: Text(
-            buttonLabels[index],
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24.0,
-              height: 1.5,
+          style: ElevatedButton.styleFrom(
+            elevation: 250.0, // Adjust the width and height as needed
+
+            backgroundColor: myColorApp.ColorApp()
+                .trans, // Set the background color to transparent
+          ),
+          child: Ink.image(
+            image: AssetImage(
+              'images/douae/ta${index}.png',
+            ),
+            child: Container(
+              width: 160.0,
+              height: 160.0,
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: myColorApp.ColorApp().background,
+                  borderRadius: BorderRadius.circular(
+                      20.0), // Adjust the radius as needed
+                  boxShadow: [
+                    BoxShadow(
+                      color: myColorApp.ColorApp().shado1, // shadow color
+                      spreadRadius: 2.0, // shadow width
+                      blurRadius: 1.0, // shadow blur
+                      offset: Offset(0, 10), // shadow offset
+                    ),
+                  ],
+                ),
+                child: Text(
+                  buttonLabels[index],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: myColorApp.ColorApp().Textcolor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                    height: 1.5,
+                  ),
+                ),
+              ),
             ),
           ),
         );
@@ -197,21 +284,24 @@ class _tasbihState extends State<tasbih> {
     maxlist = tasbih.length * 33;
     valpro = (fr / maxlist) as double;
     if (valpro < 1 && indexx < tasbih.length - 1) {
-      if (fr <= adad) {
+      if (fr < adad) {
         fr++;
         indexx = indexx;
       } else {
         adad = adad + 33;
         indexx++;
+
+        Vibration.vibrate();
       }
-    } else {
+    } else if (fr > maxlist) {
       indexx = 0;
       fr = 0;
       valpro = 0.0;
       contta++;
       adad = 33;
+      Vibration.vibrate();
     }
-    print('${maxlist}');
+    print('${adad}');
   }
 
   @override
@@ -237,8 +327,8 @@ class _tasbihState extends State<tasbih> {
               lineWidth: 6,
               animation: true,
               animateFromLastPercent: true,
-              progressColor: Colors.blue,
-              backgroundColor: Colors.transparent,
+              progressColor: myColorApp.ColorApp().background,
+              backgroundColor: myColorApp.ColorApp().trans,
             ),
           ),
           Align(
@@ -249,10 +339,11 @@ class _tasbihState extends State<tasbih> {
                   ffr();
                 });
               },
-              child: Text('${fr}'),
+              child: Text('${fr}', style: TextStyle(fontSize: 24.0),),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Transparent background color
-                onPrimary: Colors.white, // Text color
+                primary: myColorApp.ColorApp()
+                    .background, // Transparent background color
+                onPrimary: myColorApp.ColorApp().Textcolor, // Text color
                 shape: RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.circular(500.0), // Button border radius
@@ -269,8 +360,8 @@ class _tasbihState extends State<tasbih> {
                 onPressed: () {
                   adts(context);
                 },
-                child: Text('${tasbih.length}'),
-                // child: Icon(Icons.add),
+                child: Icon(Icons.add),
+                backgroundColor: myColorApp.ColorApp().background,
               ),
             ),
           ),
@@ -283,30 +374,33 @@ class _tasbihState extends State<tasbih> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Add Text'),
-          content: TextField(
-            controller: textController,
-            decoration: InputDecoration(labelText: 'Enter text'),
+        return  Directionality(
+      textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            title: Text('اضافة تسبيح'),
+            content: TextField(
+              controller: textController,
+              decoration: InputDecoration(labelText: 'ادخل جملة تسبيح'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('الغاء'),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    tasbih.add(textController.text);
+                    textController.text = "";
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: Text('اضافة'),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  tasbih.add(textController.text);
-                  textController.text = "";
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text('Add'),
-            ),
-          ],
         );
       },
     );

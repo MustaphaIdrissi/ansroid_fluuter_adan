@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter/material.dart';
-
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
 import 'positionscream.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue.shade300,
+      color: myColorApp.ColorApp().background2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +36,7 @@ class _LocationScreenState extends State<LocationScreen> {
             child: Text(
               "${heading!.ceil()}",
               style: TextStyle(
-                color: Colors.black,
+                color: myColorApp.ColorApp().Textcolor2,
                 fontSize: 26.0,
                 fontWeight: FontWeight.bold,
               ),

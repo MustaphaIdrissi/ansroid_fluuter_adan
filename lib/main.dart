@@ -1,3 +1,5 @@
+import 'package:adan/Theme/colorapp.dart' as myColorApp;
+import 'package:adan/menuleft.dart';
 import 'package:flutter/material.dart';
 
 import '../troispage.dart';
@@ -19,39 +21,56 @@ class Adanexemple extends StatelessWidget {
   const Adanexemple({super.key});
 
   get icon => 'fffff';
+
   ElevatedButton buildButton(
       BuildContext context, final int index, String name, String liimag) {
     return ElevatedButton(
       onPressed: () {
+      
         // Navigate to Page 2
         Navigator.pushNamed(
           context,
           '/page2',
-          arguments: name,
+          arguments: {
+            'label': name,
+            'indexr': index,
+          },
         );
       },
       style: ElevatedButton.styleFrom(
         elevation: 250.0, // Adjust the width and height as needed
 
-        backgroundColor:
-            Colors.transparent, // Set the background color to transparent
+        backgroundColor: myColorApp.ColorApp()
+            .trans, // Set the background color to transparent
       ),
       child: Ink.image(
         image: AssetImage(
           'images/$liimag',
         ),
         child: Container(
-          width: 160.0, // Adjust the width and height as needed
+          width: 160.0,
           height: 160.0,
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            color: Color.fromARGB(255, 56, 7, 233),
+            decoration: BoxDecoration(
+              color: myColorApp.ColorApp().background,
+              borderRadius:
+                  BorderRadius.circular(20.0), // Adjust the radius as needed
+              boxShadow: [
+                BoxShadow(
+                  color: myColorApp.ColorApp().shado1, // shadow color
+                  spreadRadius: 2.0, // shadow width
+                  blurRadius: 1.0, // shadow blur
+                  offset: Offset(0, 10), // shadow offset
+                ),
+              ],
+            ),
             child: Text(
               '$name',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: myColorApp.ColorApp().Textcolor,
                 fontWeight: FontWeight.bold,
                 fontSize: 24.0,
                 height: 1.5,
@@ -66,12 +85,12 @@ class Adanexemple extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> itemList = [
-      'أوقات الصلاة',
-      'دعاء',
-      'ادان',
-      'القبلة',
-      'تسبيح',
-      '2تسبيح'
+      'مواقيت الصلاة',
+      'الأدعية',
+      'أذان',
+      'القبلة الصلاة',
+      'المسبحة',
+      'القرأن الكريم'
     ];
     final List<String> itemimg = [
       'adan6.png',
@@ -86,7 +105,14 @@ class Adanexemple extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Page 1'),
+          title: const Text(
+            'تطبيق اسلامي',
+            style: TextStyle(
+              fontFamily: 'font2',
+              fontSize: 24,
+            ),
+          ),
+          backgroundColor: myColorApp.ColorApp().background,
         ),
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -107,6 +133,7 @@ class Adanexemple extends StatelessWidget {
             );
           },
         ),
+        drawer: MenuLeft(),
       ),
     );
   }
